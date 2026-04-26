@@ -34,6 +34,12 @@ spec:
             value: "false"
           - name: KC_HTTP_ENABLED
             value: "true"
+          # Ép Keycloak biết nó đang chạy ở địa chỉ IP nào
+          - name: KC_HOSTNAME
+            value: "136.112.35.207"
+          # Đảm bảo Keycloak không ép buộc dùng HTTPS cho Cookie
+          - name: KC_HOSTNAME_STRICT_HTTPS
+            value: "false"
         ports:
         - containerPort: 8080
 ---
