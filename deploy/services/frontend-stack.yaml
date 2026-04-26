@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: bff
-        image: longle2112/yas-back-office-bff:latest
+        image: longle2112/yas-backoffice-bff:latest
         ports:
         - containerPort: 8080
         env:
