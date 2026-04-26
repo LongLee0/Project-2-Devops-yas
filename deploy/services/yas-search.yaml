@@ -24,6 +24,8 @@ spec:
       - name: yas-search
         image: longle2112/yas-search:latest # Đây là giá trị khởi tạo
         env:
+          - name: SPRING_ELASTICSEARCH_URIS
+            value: http://elasticsearch:9200
           - name: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
             value: "5"
           - name: SPRING_DATASOURCE_URL
