@@ -2,18 +2,23 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: yas-ingress
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-  - host: yas.local  # Tên miền ảo để bạn test
+  - host: yas.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: yas-storefront-service # Tên service frontend của bạn
+            name: yas-storefront-service
+            port:
+              number: 80
+      - path: /api # Mọi yêu cầu gọi data sẽ vào đây
+        pathType: Prefix
+        backend:
+          service:
+            name: yas-api-gateway-service # Đảm bảo tên này khớp với service gateway
             port:
               number: 8080
   - host: admin.yas.local
@@ -25,14 +30,4 @@ spec:
           service:
             name: yas-back-office-service
             port:
-              number: 8080
-  - host: auth.yas.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: keycloak-service
-            port:
-              number: 8080
+              number: 80

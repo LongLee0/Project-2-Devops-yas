@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yas-storefront
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yas-storefront
+  template:
+    metadata:
+      labels:
+        app: yas-storefront
+    spec:
+      containers:
+      - name: yas-storefront
+        image: nashtechgarage/yas-storefront:latest # Đổi thành image của bạn nếu có
+        env:
+          - name: NEXT_PUBLIC_API_URL
+            value: "http://yas.local/api" # Chỉ về Ingress Gateway
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yas-storefront-service
+spec:
+  selector:
+    app: yas-storefront
+  ports:
+    - port: 80
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yas-back-office
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yas-back-office
+  template:
+    metadata:
+      labels:
+        app: yas-back-office
+    spec:
+      containers:
+      - name: yas-back-office
+        image: nashtechgarage/yas-back-office:latest
+        env:
+          - name: NEXT_PUBLIC_API_URL
+            value: "http://yas.local/api"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yas-back-office-service
+spec:
+  selector:
+    app: yas-back-office
+  ports:
+    - port: 80
+      targetPort: 3000
