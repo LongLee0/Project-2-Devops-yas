@@ -3,7 +3,7 @@ name: YAS Microservices CI
 on:
   push:
     branches:
-      - '**' # Chạy trên mọi branch theo yêu cầu đồ án
+      - '**' # Chạy trên mọi branch theo yêu cầu đồ án 
     paths:
       - '**/src/**'
       - '**/Dockerfile'
