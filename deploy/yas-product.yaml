@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yas-product
+  namespace: default
+  annotations:
+    # 1. Chỉ định image cần theo dõi
+    argocd-image-updater.argoproj.io/image-list: product=longle2112/yas-product
+    # 2. Chiến lược: Luôn lấy bản mới nhất dựa trên thời gian build
+    argocd-image-updater.argoproj.io/product.update-strategy: latest
+    # 3. Cho phép tự động cập nhật tag vào Deployment này
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yas-product
+  template:
+    metadata:
+      labels:
+        app: yas-product
+    spec:
+      containers:
+      - name: yas-product
+        image: longle2112/yas-product:latest # Đây là giá trị khởi tạo
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yas-product-service
+spec:
+  type: NodePort
+  selector:
+    app: yas-product
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001 # Cổng để bạn truy cập từ IP Master
