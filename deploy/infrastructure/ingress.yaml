@@ -4,8 +4,6 @@ metadata:
   name: yas-ingress
   annotations:
     kubernetes.io/ingress.class: traefik
-    # Thêm annotation này nếu ứng dụng gặp lỗi CORS khi gọi API
-    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
   - host: yas.local
@@ -32,7 +30,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: yas-back-office-bff-service # Đảm bảo tên service này đúng sau khi Long thêm vào stack
+            name: yas-back-office-bff-service
             port:
               number: 8080
       - path: /
