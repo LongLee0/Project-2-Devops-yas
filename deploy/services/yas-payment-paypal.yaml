@@ -46,4 +46,4 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 30001 # Cổng để bạn truy cập từ IP Master
+      nodePort: 30007 # Cổng để bạn truy cập từ IP Master
