@@ -1,3 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    CREATE DATABASE yas_product;
+    CREATE DATABASE yas_customer;
+    CREATE DATABASE yas_cart;
+    CREATE DATABASE yas_inventory;
+    CREATE DATABASE yas_order;
+    CREATE DATABASE yas_media;
+    CREATE DATABASE yas_location;
+    CREATE DATABASE yas_payment;
+    CREATE DATABASE yas_payment_paypal;
+    CREATE DATABASE yas_promotion;
+    CREATE DATABASE yas_rating;
+    CREATE DATABASE yas_search;
+    CREATE DATABASE yas_tax;
+    CREATE DATABASE keycloak_db;
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,19 +36,27 @@ spec:
       - name: postgres
         image: postgres:15
         env:
-        - name: POSTGRES_DB
-          value: yas_product
         - name: POSTGRES_USER
           value: user
         - name: POSTGRES_PASSWORD
           value: password
+        # Chúng ta dùng database mặc định là postgres để chạy script init
+        - name: POSTGRES_DB
+          value: postgres 
         ports:
         - containerPort: 5432
+        volumeMounts:
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+      - name: init-script
+        configMap:
+          name: postgres-init-script
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-service # Đây là cái tên quan trọng để các service khác gọi tới
+  name: postgres-service
 spec:
   selector:
     app: postgres
