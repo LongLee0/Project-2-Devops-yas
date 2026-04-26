@@ -11,7 +11,7 @@ metadata:
     # 3. Cho phép tự động cập nhật tag vào Deployment này
     argocd-image-updater.argoproj.io/write-back-method: git
 spec:
-  replicas: 9
+  replicas: 0
   selector:
     matchLabels:
       app: yas-customer
