@@ -24,6 +24,8 @@ spec:
       - name: yas-order
         image: longle2112/yas-order:latest # Đây là giá trị khởi tạo
         env:
+          - name: SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE
+            value: "5"
           - name: SPRING_DATASOURCE_URL
             value: jdbc:postgresql://postgres-service:5432/yas_order
           - name: SPRING_DATASOURCE_USERNAME

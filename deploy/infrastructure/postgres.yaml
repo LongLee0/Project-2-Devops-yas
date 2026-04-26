@@ -35,6 +35,7 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
+        args: ["-c", "max_connections=500"]
         env:
         - name: POSTGRES_USER
           value: user
