@@ -23,6 +23,13 @@ spec:
       containers:
       - name: yas-product
         image: longle2112/yas-product:latest # Đây là giá trị khởi tạo
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://postgres-service:5432/yas_product
+          - name: SPRING_DATASOURCE_USERNAME
+            value: user
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: password
         ports:
         - containerPort: 8080
 ---
