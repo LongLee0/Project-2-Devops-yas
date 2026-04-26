@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yas-customer
+  namespace: default
+  annotations:
+    # 1. Chỉ định image cần theo dõi
+    argocd-image-updater.argoproj.io/image-list: customer=longle2112/yas-customer
+    # 2. Chiến lược: Luôn lấy bản mới nhất dựa trên thời gian build
+    argocd-image-updater.argoproj.io/customer.update-strategy: latest
+    # 3. Cho phép tự động cập nhật tag vào Deployment này
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yas-customer
+  template:
+    metadata:
+      labels:
+        app: yas-customer
+    spec:
+      containers:
+      - name: yas-customer
+        image: longle2112/yas-customer:latest # Đây là giá trị khởi tạo
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://postgres-service:5432/yas_customer
+          - name: SPRING_DATASOURCE_USERNAME
+            value: user
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: password
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yas-customer-service
+spec:
+  type: NodePort
+  selector:
+    app: yas-customer
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001 # Cổng để bạn truy cập từ IP Master

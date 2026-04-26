@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yas-payment
+  namespace: default
+  annotations:
+    # 1. Chỉ định image cần theo dõi
+    argocd-image-updater.argoproj.io/image-list: payment=longle2112/yas-payment
+    # 2. Chiến lược: Luôn lấy bản mới nhất dựa trên thời gian build
+    argocd-image-updater.argoproj.io/payment.update-strategy: latest
+    # 3. Cho phép tự động cập nhật tag vào Deployment này
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yas-payment
+  template:
+    metadata:
+      labels:
+        app: yas-payment
+    spec:
+      containers:
+      - name: yas-payment
+        image: longle2112/yas-payment:latest # Đây là giá trị khởi tạo
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://postgres-service:5432/yas_payment
+          - name: SPRING_DATASOURCE_USERNAME
+            value: user
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: password
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yas-payment-service
+spec:
+  type: NodePort
+  selector:
+    app: yas-payment
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30001 # Cổng để bạn truy cập từ IP Master
