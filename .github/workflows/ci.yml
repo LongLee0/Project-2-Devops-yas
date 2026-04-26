@@ -17,8 +17,6 @@ jobs:
         id: filter
         with:
           filters: |
-            backoffice-bff: 'backoffice-bff/**'
-            storefront-bff: 'storefront-bff/**'
             tax: 'tax/**'
             search: 'search/**'
             rating: 'rating/**'

@@ -2,32 +2,43 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: yas-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    # Thêm annotation này nếu ứng dụng gặp lỗi CORS khi gọi API
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
   - host: yas.local
     http:
       paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: yas-storefront-bff-service
+            port:
+              number: 8080
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: yas-storefront-service
+            name: yas-storefront-ui-service
             port:
               number: 80
-      - path: /api # Mọi yêu cầu gọi data sẽ vào đây
-        pathType: Prefix
-        backend:
-          service:
-            name: yas-api-gateway-service # Đảm bảo tên này khớp với service gateway
-            port:
-              number: 8080
   - host: admin.yas.local
     http:
       paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: yas-back-office-bff-service # Đảm bảo tên service này đúng sau khi Long thêm vào stack
+            port:
+              number: 8080
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: yas-back-office-service
+            name: yas-back-office-ui-service
             port:
               number: 80
