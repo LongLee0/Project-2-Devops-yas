@@ -82,6 +82,10 @@ spec:
             value: "http://yas-payment-paypal-service:8080"
           - name: KEYCLOAK_URL
             value: "http://keycloak-service:8080"
+          - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
+            value: "http://keycloak-service:8080/realms/Yas"
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+            value: "http://keycloak-service:8080/realms/Yas"
 ---
 apiVersion: v1
 kind: Service
@@ -178,6 +182,10 @@ spec:
             value: "http://yas-payment-paypal-service:8080"
           - name: KEYCLOAK_URL
             value: "http://keycloak-service:8080"
+          - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
+            value: "http://keycloak-service:8080/realms/Yas"
+          - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+            value: "http://keycloak-service:8080/realms/Yas"
 ---
 apiVersion: v1
 kind: Service
